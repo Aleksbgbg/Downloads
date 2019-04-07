@@ -1,12 +1,12 @@
 ﻿namespace Downloads.Tests.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using Downloads.Controllers;
     using Downloads.Models;
     using Downloads.Models.Repositories;
+    using Downloads.Tests.Api;
 
     using Microsoft.AspNetCore.Mvc;
 
@@ -19,14 +19,7 @@
         [Fact]
         public void TestRetrievesAllApps()
         {
-            App[] apps = new App[]
-            {
-                new App
-                {
-                    Name = "Some App",
-                    LastUpdated = DateTime.Today
-                }
-            };
+            App[] apps = Data.Apps;
 
             Mock<IAppRepository> appRepositoryMock = new Mock<IAppRepository>();
             appRepositoryMock.SetupGet(appRepository => appRepository.Apps)
