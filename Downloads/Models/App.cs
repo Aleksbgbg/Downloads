@@ -17,5 +17,7 @@
         public DateTime LastUpdated { get; set; }
 
         public string GitHubUrl { get; set; }
+
+        public string DownloadUrl { get; set; }
     }
 }

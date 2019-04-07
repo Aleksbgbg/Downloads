@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
 
     using Downloads.Controllers;
     using Downloads.Models;
@@ -41,13 +42,40 @@
         }
 
         [Fact]
-        public void TestFilterApps()
+        public void TestFilterAppsOnViewApp()
         {
             App lastApp = Data.Apps.Last();
 
             ViewResult result = _downloadsController.ViewApp(lastApp.Name);
 
             _appRepositoryMock.Verify(appRepository => appRepository.Find(lastApp.Name), Times.Once);
+        }
+
+        [Fact]
+        public void TestFilterAppsOnDownload()
+        {
+            App lastApp = Data.Apps.Last();
+
+            _appRepositoryMock.Setup(appRepository => appRepository.Find(lastApp.Name))
+                              .Returns(lastApp);
+
+            _downloadsController.Download(lastApp.Name);
+
+            _appRepositoryMock.Verify(appRepository => appRepository.Find(lastApp.Name), Times.Once);
+        }
+
+        [Fact]
+        public void TestRedirectOnDownload()
+        {
+            App app = Data.Apps.Last();
+
+            _appRepositoryMock.Setup(appRepository => appRepository.Find(app.Name))
+                              .Returns(app);
+
+            RedirectResult redirect = _downloadsController.Download(app.Name);
+
+            Assert.False(redirect.Permanent);
+            Assert.Equal(app.DownloadUrl, redirect.Url);
         }
     }
 }

@@ -11,7 +11,8 @@
             new App
             {
                 Name = "Some App",
-                LastUpdated = DateTime.Today
+                LastUpdated = DateTime.Today,
+                DownloadUrl = "https://github.com/releases/some-app"
             }
         };
     }

@@ -1,5 +1,6 @@
 ﻿namespace Downloads.Controllers
 {
+    using Downloads.Models;
     using Downloads.Models.Repositories;
 
     using Microsoft.AspNetCore.Mvc;
@@ -23,8 +24,10 @@
             return View(_appRepository.Find(app));
         }
 
-        public void Download(string app)
+        public RedirectResult Download(string app)
         {
+            App targetApp = _appRepository.Find(app);
+            return Redirect(targetApp.DownloadUrl);
         }
     }
 }
