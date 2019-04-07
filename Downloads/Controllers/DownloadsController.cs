@@ -8,5 +8,9 @@
         {
             return View();
         }
+
+        public void Download(string app)
+        {
+        }
     }
 }
