@@ -1,26 +1,21 @@
 ﻿namespace Downloads.Models
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class App
     {
-        public App(string name, string latestVersion, string description, DateTime lastUpdated, string gitHubUrl)
-        {
-            Name = name;
-            LatestVersion = latestVersion;
-            Description = description;
-            LastUpdated = lastUpdated;
-            GitHubUrl = gitHubUrl;
-        }
+        [Key]
+        public string Id { get; set; }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
-        public string LatestVersion { get; }
+        public string LatestVersion { get; set; }
 
-        public string Description { get; }
+        public string Description { get; set; }
 
-        public DateTime LastUpdated { get; }
+        public DateTime LastUpdated { get; set; }
 
-        public string GitHubUrl { get; }
+        public string GitHubUrl { get; set; }
     }
 }
