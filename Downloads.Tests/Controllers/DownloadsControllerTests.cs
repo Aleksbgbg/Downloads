@@ -16,16 +16,22 @@
 
     public class DownloadsControllerTests
     {
+        private readonly Mock<IAppRepository> _appRepositoryMock;
+
+        public DownloadsControllerTests()
+        {
+            _appRepositoryMock = new Mock<IAppRepository>();
+        }
+
         [Fact]
         public void TestRetrieveAllApps()
         {
             App[] apps = Data.Apps;
 
-            Mock<IAppRepository> appRepositoryMock = new Mock<IAppRepository>();
-            appRepositoryMock.SetupGet(appRepository => appRepository.Apps)
-                             .Returns(apps.AsQueryable());
+            _appRepositoryMock.SetupGet(appRepository => appRepository.Apps)
+                              .Returns(apps.AsQueryable());
 
-            DownloadsController downloadsController = new DownloadsController(appRepositoryMock.Object);
+            DownloadsController downloadsController = new DownloadsController(_appRepositoryMock.Object);
 
             ViewResult result = downloadsController.All();
 
@@ -38,13 +44,11 @@
         {
             App lastApp = Data.Apps.Last();
 
-            Mock<IAppRepository> appRepositoryMock = new Mock<IAppRepository>();
-
-            DownloadsController downloadsController = new DownloadsController(appRepositoryMock.Object);
+            DownloadsController downloadsController = new DownloadsController(_appRepositoryMock.Object);
 
             ViewResult result = downloadsController.ViewApp(lastApp.Name);
 
-            appRepositoryMock.Verify(appRepository => appRepository.Find(lastApp.Name), Times.Once);
+            _appRepositoryMock.Verify(appRepository => appRepository.Find(lastApp.Name), Times.Once);
         }
     }
 }
