@@ -1,0 +1,20 @@
+﻿@model App
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Version @Model.LatestVersion</h6>
+
+        <p class="card-text">
+            @Model.Description
+        </p>
+
+        <a class="btn btn-outline-success card-link" role="button" asp-controller="Downloads" asp-action="Download" asp-route-app="@Model.Name">Download</a>
+
+        <a class="card-link" href="@Model.GitHubUrl" target="_blank">Further Details</a>
+    </div>
+
+    <div class="card-footer text-muted">
+        Released @Model.LastUpdated.ToString("F")
+    </div>
+</div>
