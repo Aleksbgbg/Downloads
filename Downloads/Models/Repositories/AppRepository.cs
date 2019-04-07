@@ -14,5 +14,10 @@
         }
 
         public IQueryable<App> Apps => _appDbContext.Apps;
+
+        public App Find(string appName)
+        {
+            return Apps.Single(app => app.Name == appName);
+        }
     }
 }

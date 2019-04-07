@@ -18,6 +18,11 @@
             return View(_appRepository.Apps);
         }
 
+        public ViewResult ViewApp(string app)
+        {
+            return View(_appRepository.Find(app));
+        }
+
         public void Download(string app)
         {
         }

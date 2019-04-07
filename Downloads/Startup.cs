@@ -49,6 +49,14 @@
                                 });
 
                 routes.MapRoute(name: null,
+                                template: "View/App/{App}",
+                                defaults: new
+                                {
+                                    Controller = "Downloads",
+                                    Action = "ViewApp"
+                                });
+
+                routes.MapRoute(name: null,
                                 template: "{Controller=Downloads}/{Action=All}");
             });
         }

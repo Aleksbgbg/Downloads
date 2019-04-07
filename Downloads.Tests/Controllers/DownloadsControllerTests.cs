@@ -17,7 +17,7 @@
     public class DownloadsControllerTests
     {
         [Fact]
-        public void TestRetrievesAllApps()
+        public void TestRetrieveAllApps()
         {
             App[] apps = Data.Apps;
 
@@ -30,7 +30,21 @@
             ViewResult result = downloadsController.All();
 
             Assert.IsAssignableFrom<IEnumerable<App>>(result.Model);
-            Assert.Equal(result.Model, apps);
+            Assert.Equal(apps, result.Model);
+        }
+
+        [Fact]
+        public void TestFilterApps()
+        {
+            App lastApp = Data.Apps.Last();
+
+            Mock<IAppRepository> appRepositoryMock = new Mock<IAppRepository>();
+
+            DownloadsController downloadsController = new DownloadsController(appRepositoryMock.Object);
+
+            ViewResult result = downloadsController.ViewApp(lastApp.Name);
+
+            appRepositoryMock.Verify(appRepository => appRepository.Find(lastApp.Name), Times.Once);
         }
     }
 }

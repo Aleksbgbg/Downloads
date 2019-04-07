@@ -5,5 +5,7 @@
     public interface IAppRepository
     {
         IQueryable<App> Apps { get; }
+
+        App Find(string appName);
     }
 }
