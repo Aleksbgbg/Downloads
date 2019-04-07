@@ -19,15 +19,15 @@
             return View(_appRepository.Apps);
         }
 
-        public ViewResult ViewApp(string app)
+        public ViewResult ViewApp(string appName)
         {
-            return View(_appRepository.Find(app));
+            return View(_appRepository.Find(appName));
         }
 
-        public RedirectResult Download(string app)
+        public RedirectResult Download(string appName)
         {
-            App targetApp = _appRepository.Find(app);
-            return Redirect(targetApp.DownloadUrl);
+            App app = _appRepository.Find(appName);
+            return Redirect(app.DownloadUrl);
         }
     }
 }

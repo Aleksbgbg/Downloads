@@ -41,7 +41,7 @@
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: null,
-                                template: "Download/{App}",
+                                template: "Download/{AppName}",
                                 defaults: new
                                 {
                                     Controller = "Downloads",
@@ -49,7 +49,7 @@
                                 });
 
                 routes.MapRoute(name: null,
-                                template: "View/App/{App}",
+                                template: "View/App/{AppName}",
                                 defaults: new
                                 {
                                     Controller = "Downloads",
