@@ -18,9 +18,12 @@
     {
         private readonly Mock<IAppRepository> _appRepositoryMock;
 
+        private readonly DownloadsController _downloadsController;
+
         public DownloadsControllerTests()
         {
             _appRepositoryMock = new Mock<IAppRepository>();
+            _downloadsController = new DownloadsController(_appRepositoryMock.Object);
         }
 
         [Fact]
@@ -31,9 +34,7 @@
             _appRepositoryMock.SetupGet(appRepository => appRepository.Apps)
                               .Returns(apps.AsQueryable());
 
-            DownloadsController downloadsController = new DownloadsController(_appRepositoryMock.Object);
-
-            ViewResult result = downloadsController.All();
+            ViewResult result = _downloadsController.All();
 
             Assert.IsAssignableFrom<IEnumerable<App>>(result.Model);
             Assert.Equal(apps, result.Model);
@@ -44,9 +45,7 @@
         {
             App lastApp = Data.Apps.Last();
 
-            DownloadsController downloadsController = new DownloadsController(_appRepositoryMock.Object);
-
-            ViewResult result = downloadsController.ViewApp(lastApp.Name);
+            ViewResult result = _downloadsController.ViewApp(lastApp.Name);
 
             _appRepositoryMock.Verify(appRepository => appRepository.Find(lastApp.Name), Times.Once);
         }

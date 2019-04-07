@@ -15,17 +15,18 @@
     {
         private readonly Mock<AppDbContext> _appDbContextMock;
 
+        private readonly AppRepository _appRepository;
+
         public AppRepositoryTests()
         {
             _appDbContextMock = new Mock<AppDbContext>();
+            _appRepository = new AppRepository(_appDbContextMock.Object);
         }
 
         [Fact]
         public void TestRetrieveAllApps()
         {
-            AppRepository appRepository = new AppRepository(_appDbContextMock.Object);
-
-            IQueryable<App> result = appRepository.Apps;
+            IQueryable<App> result = _appRepository.Apps;
 
             _appDbContextMock.Verify(appDbContext => appDbContext.Apps, Times.Once);
         }
@@ -33,15 +34,12 @@
         [Fact]
         public void TestFindApp()
         {
-            App[] apps = Data.Apps;
-            App lastApp = apps.Last();
+            App lastApp = Data.Apps.Last();
 
             _appDbContextMock.SetupGet(appDbContext => appDbContext.Apps)
-                             .Returns(Utils.GetQueryableMockDbSet(apps.ToList()));
+                             .Returns(Utils.GetQueryableMockDbSet(Data.Apps.ToList()));
 
-            AppRepository appRepository = new AppRepository(_appDbContextMock.Object);
-
-            App result = appRepository.Find(lastApp.Name);
+            App result = _appRepository.Find(lastApp.Name);
 
             Assert.Equal(lastApp, result);
         }
