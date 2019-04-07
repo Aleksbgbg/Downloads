@@ -1,6 +1,7 @@
 ﻿namespace Downloads
 {
     using Downloads.Models.Database;
+    using Downloads.Models.Repositories;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,8 @@
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(_configuration["Data:Identity:ConnectionString"]));
 
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
+            services.AddTransient<IAppRepository, AppRepository>();
 
             services.AddMvc();
         }
