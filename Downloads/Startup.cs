@@ -20,7 +20,7 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(_configuration["Data:Identity:ConnectionString"]));
+            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(_configuration["Data:ConnectionString"]));
 
             services.AddTransient<IAppRepository, AppRepository>();
 
