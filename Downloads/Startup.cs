@@ -1,7 +1,11 @@
 ﻿namespace Downloads
 {
+    using System;
+
+    using Downloads.Infrastructure.Octokit;
     using Downloads.Models.Database;
     using Downloads.Models.Repositories;
+    using Downloads.Services;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -23,8 +27,16 @@
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(_configuration["Data:ConnectionString"]));
 
             services.AddTransient<IAppRepository, AppRepository>();
+            services.AddTransient<IGitHubApiService, GitHubApiService>();
 
             services.AddMvc();
+
+            services.Configure<OctokitOptions>(options =>
+            {
+                options.AppName = "Downloads";
+                options.ClientId = Environment.GetEnvironmentVariable("Octokit_Client_Id");
+                options.ClientSecret = Environment.GetEnvironmentVariable("Octokit_Client_Secret");
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
