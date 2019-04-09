@@ -6,6 +6,7 @@
     using Downloads.Models.Database;
     using Downloads.Models.Repositories;
     using Downloads.Services;
+    using Downloads.Services.DatabaseUpdates;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -30,6 +31,8 @@
 
             services.AddTransient<IAppRepository, AppRepository>();
             services.AddTransient<IGitHubApiService, GitHubApiService>();
+
+            services.AddTransient<ITimeIntervalCalculatorService, TimeIntervalCalculatorService>();
 
             services.AddTransient<IGitHubClient, GitHubClient>(serviceProvider => new GitHubClient(new ProductHeaderValue("Downloads")));
 
