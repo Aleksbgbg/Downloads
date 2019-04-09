@@ -13,6 +13,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
+    using Octokit;
+
     public class Startup
     {
         private readonly IConfiguration _configuration;
@@ -28,6 +30,8 @@
 
             services.AddTransient<IAppRepository, AppRepository>();
             services.AddTransient<IGitHubApiService, GitHubApiService>();
+
+            services.AddTransient<IGitHubClient, GitHubClient>(serviceProvider => new GitHubClient(new ProductHeaderValue("Downloads")));
 
             services.AddMvc();
 
