@@ -1,5 +1,7 @@
 ﻿namespace Downloads.Controllers
 {
+    using System.Threading.Tasks;
+
     using Downloads.Services;
 
     using Microsoft.AspNetCore.Mvc;
@@ -13,11 +15,11 @@
             _gitHubApiService = gitHubApiService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (HttpContext.Request.Cookies.ContainsKey("OctokitAuth"))
             {
-                return NotFound();
+                return View(await _gitHubApiService.GetUserRepositories());
             }
             else
             {

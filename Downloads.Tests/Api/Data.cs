@@ -15,5 +15,11 @@
                 DownloadUrl = "https://github.com/releases/some-app"
             }
         };
+
+        internal static GitHubRepository[] Repositories =
+        {
+            new GitHubRepository("Tornado-Player"),
+            new GitHubRepository("YouTube-Downloader")
+        };
     }
 }
