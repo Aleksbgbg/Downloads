@@ -7,9 +7,9 @@
 
     using Moq;
 
-    public static class Utils
+    internal static class Utils
     {
-        public static DbSet<T> GetQueryableMockDbSet<T>(ICollection<T> sourceList)
+        internal static Mock<DbSet<T>> GetQueryableMockDbSet<T>(ICollection<T> sourceList)
                 where T : class
         {
             IQueryable<T> sourceListQueryable = sourceList.AsQueryable();
@@ -22,8 +22,9 @@
             dbSetMock.As<IQueryable<T>>().Setup(dbSet => dbSet.GetEnumerator()).Returns(() => sourceListQueryable.GetEnumerator());
 
             dbSetMock.Setup(dbSet => dbSet.Add(It.IsAny<T>())).Callback<T>(sourceList.Add);
+            dbSetMock.Setup(dbSet => dbSet.Remove(It.IsAny<T>())).Callback<T>(element => sourceList.Remove(element));
 
-            return dbSetMock.Object;
+            return dbSetMock;
         }
     }
 }
