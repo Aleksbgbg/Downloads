@@ -30,7 +30,15 @@
         {
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(_configuration["Data:ConnectionString"]));
 
-            services.AddTransient<IGitHubClient, GitHubClient>(serviceProvider => new GitHubClient(new ProductHeaderValue("Downloads")));
+            services.AddTransient<IGitHubClient, GitHubClient>(serviceProvider =>
+            {
+                OctokitOptions octokitOptions = serviceProvider.GetService<IOptions<OctokitOptions>>().Value;
+
+                return new GitHubClient(new ProductHeaderValue(octokitOptions.AppName))
+                {
+                    Credentials = new Credentials(octokitOptions.Username, octokitOptions.Password)
+                };
+            });
 
             services.AddTransient<IAppRepository, AppRepository>();
             services.AddTransient<IGitHubApiService, GitHubApiService>();
@@ -53,8 +61,8 @@
             services.Configure<OctokitOptions>(options =>
             {
                 options.AppName = "Downloads";
-                options.ClientId = Environment.GetEnvironmentVariable("Octokit_Client_Id");
-                options.ClientSecret = Environment.GetEnvironmentVariable("Octokit_Client_Secret");
+                options.Username = Environment.GetEnvironmentVariable("Octokit_Username");
+                options.Password = Environment.GetEnvironmentVariable("Octokit_Password");
             });
         }
 
