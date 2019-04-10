@@ -25,7 +25,7 @@
 
         public async Task UpdateApps()
         {
-            App[] githubApps = await _gitHubApiService.GetReleasedGitHubApps();
+            IEnumerable<App> githubApps = await _gitHubApiService.GetReleasedGitHubApps();
             _gitHubAppsByName = githubApps.ToDictionary(app => app.Name, app => app);
 
             await RemoveRepositoryAppsNotInGitHub();

@@ -36,21 +36,23 @@
             return repositories.Select(repository => new GitHubRepository(repository.Name));
         }
 
-        public async Task<App[]> GetReleasedGitHubApps()
+        public async Task<IEnumerable<App>> GetReleasedGitHubApps()
         {
             IReadOnlyList<Repository> repositories = await _gitHubClient.Repository.GetAllForUser("Aleksbgbg");
 
-            App[] apps = new App[repositories.Count];
+            List<App> apps = new List<App>();
 
             for (int repositoryIndex = 0; repositoryIndex < repositories.Count; ++repositoryIndex)
             {
                 Repository repository = repositories[repositoryIndex];
 
-                Release latestRelease = await _gitHubClient.Repository.Release.GetLatest(repository.Id);
-
-                if (latestRelease != null)
+                try
                 {
-                    apps[repositoryIndex] = CreateApp(repository, latestRelease);
+                    Release latestRelease = await _gitHubClient.Repository.Release.GetLatest(repository.Id);
+                    apps.Add(CreateApp(repository, latestRelease));
+                }
+                catch (NotFoundException)
+                {
                 }
             }
 

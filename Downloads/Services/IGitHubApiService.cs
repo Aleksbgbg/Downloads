@@ -11,6 +11,6 @@
 
         Task<IEnumerable<GitHubRepository>> GetUserRepositories();
 
-        Task<App[]> GetReleasedGitHubApps();
+        Task<IEnumerable<App>> GetReleasedGitHubApps();
     }
 }
