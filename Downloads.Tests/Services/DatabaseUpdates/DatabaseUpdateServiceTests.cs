@@ -6,6 +6,7 @@
     using Downloads.Services.DatabaseUpdates;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Moq;
 
@@ -13,6 +14,8 @@
 
     public class DatabaseUpdateServiceTests
     {
+        private readonly Mock<ILogger<DatabaseUpdateService>> _loggerMock;
+
         private readonly Mock<IAppRepositoryUpdateService> _appRepositoryUpdateServiceMock;
 
         private readonly Mock<IDatabaseUpdateTimerService> _databaseUpdateTimerMock;
@@ -21,6 +24,8 @@
 
         public DatabaseUpdateServiceTests()
         {
+            _loggerMock = new Mock<ILogger<DatabaseUpdateService>>();
+
             _appRepositoryUpdateServiceMock = new Mock<IAppRepositoryUpdateService>();
 
             _databaseUpdateTimerMock = new Mock<IDatabaseUpdateTimerService>();
@@ -34,7 +39,7 @@
             serviceScopeMock.Setup(serviceScope => serviceScope.ServiceProvider)
                             .Returns(serviceProviderMock.Object);
 
-            _databaseUpdateService = new DatabaseUpdateService(_databaseUpdateTimerMock.Object, serviceProviderMock.Object, serviceProvider => serviceScopeMock.Object);
+            _databaseUpdateService = new DatabaseUpdateService(_loggerMock.Object, _databaseUpdateTimerMock.Object, serviceProviderMock.Object, serviceProvider => serviceScopeMock.Object);
         }
 
         [Fact]
