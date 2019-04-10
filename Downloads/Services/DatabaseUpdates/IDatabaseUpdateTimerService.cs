@@ -8,5 +8,7 @@
         event ElapsedEventHandler Elapsed;
 
         void Start();
+
+        void Stop();
     }
 }

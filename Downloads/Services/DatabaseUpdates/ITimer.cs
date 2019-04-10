@@ -10,5 +10,7 @@
         double Interval { get; set; }
 
         void Start();
+
+        void Stop();
     }
 }

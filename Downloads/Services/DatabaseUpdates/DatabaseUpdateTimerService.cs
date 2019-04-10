@@ -31,11 +31,22 @@
             _updateTime = _databaseTimerOptions.Value.UpdateTime;
 
             CalculateTimerInterval();
-            _timer.Elapsed += InitialElapsedHandler;
+            _timer.Elapsed += TimerElapsedHandler;
             _timer.Start();
         }
 
-        private void InitialElapsedHandler(object sender, ElapsedEventArgs e)
+        public void Stop()
+        {
+            _timer.Stop();
+            _timer.Elapsed -= TimerElapsedHandler;
+        }
+
+        public void Dispose()
+        {
+            _timer.Dispose();
+        }
+
+        private void TimerElapsedHandler(object sender, ElapsedEventArgs e)
         {
             _updateTime = _updateTime.AddDays(1.0);
             CalculateTimerInterval();
@@ -46,11 +57,6 @@
         private void CalculateTimerInterval()
         {
             _timer.Interval = _timeIntervalCalculatorService.CalculateTimeUntilDeadline(_updateTime).TotalMilliseconds;
-        }
-
-        public void Dispose()
-        {
-            _timer.Dispose();
         }
     }
 }

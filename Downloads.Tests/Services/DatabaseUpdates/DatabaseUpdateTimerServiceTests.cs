@@ -1,6 +1,7 @@
 ﻿namespace Downloads.Tests.Services.DatabaseUpdates
 {
     using System;
+    using System.Timers;
 
     using Downloads.Infrastructure.Options;
     using Downloads.Services.DatabaseUpdates;
@@ -101,6 +102,31 @@
             _updateTime = new DateTime(2020, 1, 1, 1, 1, 1);
 
             _databaseUpdateTimerService.Start();
+
+            _timeIntervalCalculatorMock.Verify(timeIntervalCalculator => timeIntervalCalculator.CalculateTimeUntilDeadline(_updateTime), Times.Once);
+        }
+
+        [Fact]
+        public void TestStopsTimerOnStop()
+        {
+            _databaseUpdateTimerService.Start();
+            _databaseUpdateTimerService.Stop();
+
+            _timerMock.Verify(timer => timer.Stop(), Times.Once);
+        }
+
+        [Fact]
+        public void TestUnsubscribeFromTimerEventOnStop()
+        {
+            const int timerElapsedRaiseCount = 5;
+
+            _databaseUpdateTimerService.Start();
+            _databaseUpdateTimerService.Stop();
+
+            for (int invocation = 0; invocation < timerElapsedRaiseCount; invocation++)
+            {
+                _timerMock.Raise(timer => timer.Elapsed += null, (EventArgs)null);
+            }
 
             _timeIntervalCalculatorMock.Verify(timeIntervalCalculator => timeIntervalCalculator.CalculateTimeUntilDeadline(_updateTime), Times.Once);
         }
