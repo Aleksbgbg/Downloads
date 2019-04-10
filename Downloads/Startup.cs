@@ -13,6 +13,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
 
     using Octokit;
 
@@ -29,6 +30,8 @@
         {
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(_configuration["Data:ConnectionString"]));
 
+            services.AddTransient<IGitHubClient, GitHubClient>(serviceProvider => new GitHubClient(new ProductHeaderValue("Downloads")));
+
             services.AddTransient<IAppRepository, AppRepository>();
             services.AddTransient<IGitHubApiService, GitHubApiService>();
 
@@ -38,7 +41,7 @@
             services.AddTransient<IDatabaseUpdateTimerService, DatabaseUpdateTimerService>();
             services.AddTransient<IAppRepositoryUpdateService, AppRepositoryUpdateService>();
 
-            services.AddTransient<IGitHubClient, GitHubClient>(serviceProvider => new GitHubClient(new ProductHeaderValue("Downloads")));
+            services.AddHostedService<DatabaseUpdateService>();
 
             services.AddMvc();
 
