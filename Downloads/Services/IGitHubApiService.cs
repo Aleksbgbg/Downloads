@@ -10,5 +10,7 @@
         string GetAuthUrl();
 
         Task<IEnumerable<GitHubRepository>> GetUserRepositories();
+
+        Task<App[]> GetReleasedGitHubApps();
     }
 }
