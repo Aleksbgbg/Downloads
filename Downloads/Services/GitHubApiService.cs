@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Downloads.Infrastructure.Octokit;
+    using Downloads.Infrastructure.Options;
     using Downloads.Models;
 
     using Microsoft.Extensions.Options;

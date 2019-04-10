@@ -1,4 +1,4 @@
-﻿namespace Downloads.Infrastructure.Octokit
+﻿namespace Downloads.Infrastructure.Options
 {
     public class OctokitOptions
     {

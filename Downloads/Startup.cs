@@ -2,7 +2,6 @@
 {
     using System;
 
-    using Downloads.Infrastructure.Octokit;
     using Downloads.Infrastructure.Options;
     using Downloads.Models.Database;
     using Downloads.Models.Repositories;

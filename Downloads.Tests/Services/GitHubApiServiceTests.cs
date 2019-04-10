@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Downloads.Infrastructure.Octokit;
+    using Downloads.Infrastructure.Options;
     using Downloads.Models;
     using Downloads.Services;
 
