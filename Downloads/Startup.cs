@@ -36,6 +36,7 @@
 
             services.AddTransient<ITimeIntervalCalculatorService, TimeIntervalCalculatorService>();
             services.AddTransient<IDatabaseUpdateTimerService, DatabaseUpdateTimerService>();
+            services.AddTransient<IAppRepositoryUpdateService, AppRepositoryUpdateService>();
 
             services.AddTransient<IGitHubClient, GitHubClient>(serviceProvider => new GitHubClient(new ProductHeaderValue("Downloads")));
 
