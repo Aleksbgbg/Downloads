@@ -3,6 +3,7 @@
     using System;
 
     using Downloads.Infrastructure.Octokit;
+    using Downloads.Infrastructure.Options;
     using Downloads.Models.Database;
     using Downloads.Models.Repositories;
     using Downloads.Services;
@@ -32,12 +33,20 @@
             services.AddTransient<IAppRepository, AppRepository>();
             services.AddTransient<IGitHubApiService, GitHubApiService>();
 
+            services.AddTransient<ITimer, TimerAdapter>();
+
             services.AddTransient<ITimeIntervalCalculatorService, TimeIntervalCalculatorService>();
+            services.AddTransient<IDatabaseUpdateTimerService, DatabaseUpdateTimerService>();
 
             services.AddTransient<IGitHubClient, GitHubClient>(serviceProvider => new GitHubClient(new ProductHeaderValue("Downloads")));
 
             services.AddMvc();
 
+            services.Configure<DatabaseTimerOptions>(options =>
+            {
+                DateTime today = DateTime.Today;
+                options.UpdateTime = new DateTime(today.Year, today.Month, today.Day, 22, 00, 00);
+            });
             services.Configure<OctokitOptions>(options =>
             {
                 options.AppName = "Downloads";
