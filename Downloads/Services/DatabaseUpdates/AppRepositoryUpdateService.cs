@@ -40,7 +40,7 @@
 
         private async Task RemoveRepositoryAppsNotInGitHub()
         {
-            IQueryable<App> appsToRemove = _appRepository.Apps.Where(app => !_gitHubAppsByName.ContainsKey(app.Name));
+            App[] appsToRemove = _appRepository.Apps.Where(app => !_gitHubAppsByName.ContainsKey(app.Name)).ToArray();
 
             foreach (App app in appsToRemove)
             {
@@ -68,7 +68,7 @@
 
         private async Task AddGitHubAppsNotInRepository()
         {
-            IEnumerable<App> newGitHubApps = _gitHubAppsByName.Values.Where(app => !_repositoryAppsByName.ContainsKey(app.Name));
+            App[] newGitHubApps = _gitHubAppsByName.Values.Where(app => !_repositoryAppsByName.ContainsKey(app.Name)).ToArray();
 
             foreach (App app in newGitHubApps)
             {
