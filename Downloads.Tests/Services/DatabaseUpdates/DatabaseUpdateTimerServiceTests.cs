@@ -104,5 +104,13 @@
 
             _timeIntervalCalculatorMock.Verify(timeIntervalCalculator => timeIntervalCalculator.CalculateTimeUntilDeadline(_updateTime), Times.Once);
         }
+
+        [Fact]
+        public void TestDisposesTimerOnDispose()
+        {
+            _databaseUpdateTimerService.Dispose();
+
+            _timerMock.Verify(timer => timer.Dispose(), Times.Once);
+        }
     }
 }

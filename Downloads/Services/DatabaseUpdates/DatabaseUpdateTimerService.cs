@@ -47,5 +47,10 @@
         {
             _timer.Interval = _timeIntervalCalculatorService.CalculateTimeUntilDeadline(_updateTime).TotalMilliseconds;
         }
+
+        public void Dispose()
+        {
+            _timer.Dispose();
+        }
     }
 }

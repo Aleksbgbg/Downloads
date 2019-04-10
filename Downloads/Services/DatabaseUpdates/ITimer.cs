@@ -1,8 +1,9 @@
 ﻿namespace Downloads.Services.DatabaseUpdates
 {
+    using System;
     using System.Timers;
 
-    public interface ITimer
+    public interface ITimer : IDisposable
     {
         event ElapsedEventHandler Elapsed;
 
