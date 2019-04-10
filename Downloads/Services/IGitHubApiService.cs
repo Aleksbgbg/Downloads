@@ -7,10 +7,6 @@
 
     public interface IGitHubApiService
     {
-        string GetAuthUrl();
-
-        Task<IEnumerable<GitHubRepository>> GetUserRepositories();
-
         Task<IEnumerable<App>> GetReleasedGitHubApps();
     }
 }

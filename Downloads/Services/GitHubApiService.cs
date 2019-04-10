@@ -5,10 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Downloads.Infrastructure.Options;
     using Downloads.Models;
-
-    using Microsoft.Extensions.Options;
 
     using Octokit;
 
@@ -16,24 +13,9 @@
     {
         private readonly IGitHubClient _gitHubClient;
 
-        private readonly OctokitOptions _octokitOptions;
-
-        public GitHubApiService(IGitHubClient gitHubClient, IOptions<OctokitOptions> octokitOptions)
+        public GitHubApiService(IGitHubClient gitHubClient)
         {
-            _octokitOptions = octokitOptions.Value;
             _gitHubClient = gitHubClient;
-        }
-
-        public string GetAuthUrl()
-        {
-            OauthLoginRequest request = new OauthLoginRequest(_octokitOptions.ClientId);
-            return _gitHubClient.Oauth.GetGitHubLoginUrl(request).ToString();
-        }
-
-        public async Task<IEnumerable<GitHubRepository>> GetUserRepositories()
-        {
-            IReadOnlyList<Repository> repositories = await _gitHubClient.Repository.GetAllForUser("Aleksbgbg");
-            return repositories.Select(repository => new GitHubRepository(repository.Name));
         }
 
         public async Task<IEnumerable<App>> GetReleasedGitHubApps()
