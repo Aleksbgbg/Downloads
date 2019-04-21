@@ -1,4 +1,6 @@
-﻿@model App
+﻿@using Markdig
+
+@model App
 
 <div class="card">
     <div class="card-body">
@@ -8,7 +10,7 @@
         <h6 class="card-subtitle mb-2 text-muted">Version @Model.LatestVersion</h6>
 
         <p class="card-text">
-            @Model.Description
+            @Html.Raw(Markdown.ToHtml(Model.Description))
         </p>
 
         <a class="btn btn-outline-success card-link" role="button" asp-controller="Downloads" asp-action="Download" asp-route-appName="@Model.Name">Download</a>
