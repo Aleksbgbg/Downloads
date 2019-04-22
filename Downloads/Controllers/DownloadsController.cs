@@ -23,6 +23,7 @@
 
         public ViewResult ViewApp(string appName)
         {
+            ViewBag.AppName = appName;
             return View(_appRepository.Find(appName));
         }
 

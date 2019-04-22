@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<App>
 
+@{
+    ViewBag.PageTitle = "All Downloads";
+}
+
 @foreach (App app in Model)
 {
     <div class="my-3">
