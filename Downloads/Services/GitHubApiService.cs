@@ -69,7 +69,7 @@
 
         private static string GetAppDownloadUrl(Release latestRelease)
         {
-            return latestRelease.Assets.Single().BrowserDownloadUrl;
+            return latestRelease.Assets.First(asset => asset.Name == "Setup.exe" || asset.Name == "Release.zip").BrowserDownloadUrl;
         }
 
         private static string GetGitHubUrl(Repository repository)
