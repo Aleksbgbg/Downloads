@@ -51,7 +51,9 @@
             services.AddTransient<IDatabaseUpdateTimerService, DatabaseUpdateTimerService>();
             services.AddTransient<IAppRepositoryUpdateService, AppRepositoryUpdateService>();
 
+#if !DEBUG
             services.AddHostedService<DatabaseUpdateService>();
+#endif
 
             services.AddMvc();
 
