@@ -17,6 +17,8 @@
 
     using Octokit;
 
+    using WebMarkupMin.AspNetCore2;
+
     public class Startup
     {
         private readonly IConfiguration _configuration;
@@ -53,6 +55,14 @@
 
             services.AddMvc();
 
+            services.AddWebMarkupMin(options =>
+                    {
+                        options.AllowMinificationInDevelopmentEnvironment = true;
+                        options.AllowCompressionInDevelopmentEnvironment = true;
+                    })
+                    .AddHtmlMinification()
+                    .AddHttpCompression();
+
             services.Configure<DatabaseTimerOptions>(options =>
             {
                 DateTime today = DateTime.Today;
@@ -74,6 +84,9 @@
             }
 
             app.UseStaticFiles();
+
+            app.UseWebMarkupMin();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: null,
