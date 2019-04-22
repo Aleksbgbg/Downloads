@@ -7,7 +7,7 @@
         <h5 class="card-title">
             <a asp-controller="Downloads" asp-action="ViewApp" asp-route-appName="@Model.Name">@Model.Name</a>
         </h5>
-        <h6 class="card-subtitle mb-2 text-muted">Version @Model.LatestVersion</h6>
+        <h6 class="card-subtitle mb-2 text-muted">@Model.LatestVersion</h6>
 
         <p class="card-text">
             @Html.Raw(Markdown.ToHtml(Model.Description))
