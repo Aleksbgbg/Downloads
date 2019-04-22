@@ -1,5 +1,7 @@
 ﻿namespace Downloads.Controllers
 {
+    using System.Linq;
+
     using Downloads.Models;
     using Downloads.Models.Repositories;
 
@@ -16,7 +18,7 @@
 
         public ViewResult All()
         {
-            return View(_appRepository.Apps);
+            return View(_appRepository.Apps.OrderBy(app => app.Name));
         }
 
         public ViewResult ViewApp(string appName)
