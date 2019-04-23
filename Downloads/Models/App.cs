@@ -19,5 +19,7 @@
         public string GitHubUrl { get; set; }
 
         public string DownloadUrl { get; set; }
+
+        public int DownloadCount { get; set; }
     }
 }
