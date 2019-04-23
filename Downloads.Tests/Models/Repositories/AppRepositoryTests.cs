@@ -31,17 +31,33 @@
         [Fact]
         public void TestRetrieveAllApps()
         {
+            SetupAppList();
+
+            var result = _appRepository.Apps;
+
+            VerifyRetrievedAppsFromDb();
+        }
+
+        [Fact]
+        public void TestAppsInOrder()
+        {
+            List<App> apps = SetupAppList();
+            App lastAlphabetIndexApp = new App
+            {
+                Name = "ZZZZ"
+            };
+            apps.Insert(0, lastAlphabetIndexApp);
+
             IQueryable<App> result = _appRepository.Apps;
 
-            _appDbContextMock.Verify(appDbContext => appDbContext.Apps, Times.Once);
+            Assert.Equal(lastAlphabetIndexApp, result.Last());
         }
 
         [Fact]
         public void TestFindApp()
         {
-            List<App> apps = Data.Apps.ToList();
+            List<App> apps = SetupAppList();
             App lastApp = apps.Last();
-            SetupAppDbSet(apps);
 
             App result = _appRepository.Find(lastApp.Name);
 
@@ -51,9 +67,8 @@
         [Fact]
         public async Task TestAddApp()
         {
-            List<App> apps = new List<App>();
+            List<App> apps = SetupEmptyAppList();
             App newApp = Data.Apps.Last();
-            SetupAppDbSet(apps);
 
             await _appRepository.Add(newApp);
 
@@ -64,9 +79,8 @@
         [Fact]
         public async Task TestDeleteApp()
         {
-            List<App> apps = Data.Apps.ToList();
+            List<App> apps = SetupAppList();
             App appToRemove = apps.Last();
-            SetupAppDbSet(apps);
 
             await _appRepository.Remove(appToRemove);
 
@@ -83,8 +97,24 @@
 
             await _appRepository.Update(appToUpdate);
 
-            dbSetMock.Verify(dbSet => dbSet.Update(appToUpdate), Times.Once);
+            VerifyUpdateDbSetWithApp(dbSetMock, appToUpdate);
             VerifyCalledDatabaseSaveChanges();
+        }
+
+        private List<App> SetupAppList()
+        {
+            List<App> apps = Data.Apps.ToList();
+            SetupAppDbSet(apps);
+
+            return apps;
+        }
+
+        private List<App> SetupEmptyAppList()
+        {
+            List<App> apps = new List<App>();
+            SetupAppDbSet(apps);
+
+            return apps;
         }
 
         private Mock<DbSet<App>> SetupAppDbSet(ICollection<App> appCollection)
@@ -97,9 +127,19 @@
             return mockDbSet;
         }
 
+        private void VerifyUpdateDbSetWithApp(Mock<DbSet<App>> dbSetMock, App appToUpdate)
+        {
+            dbSetMock.Verify(dbSet => dbSet.Update(appToUpdate));
+        }
+
+        private void VerifyRetrievedAppsFromDb()
+        {
+            _appDbContextMock.Verify(appDbContext => appDbContext.Apps);
+        }
+
         private void VerifyCalledDatabaseSaveChanges()
         {
-            _appDbContextMock.Verify(appDbContext => appDbContext.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _appDbContextMock.Verify(appDbContext => appDbContext.SaveChangesAsync(It.IsAny<CancellationToken>()));
         }
     }
 }

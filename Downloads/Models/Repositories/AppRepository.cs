@@ -14,11 +14,11 @@
             _appDbContext = appDbContext;
         }
 
-        public IQueryable<App> Apps => _appDbContext.Apps;
+        public IQueryable<App> Apps => _appDbContext.Apps.OrderBy(app => app.Name);
 
         public App Find(string appName)
         {
-            return Apps.Single(app => app.Name == appName);
+            return _appDbContext.Apps.Single(app => app.Name == appName);
         }
 
         public async Task Add(App newApp)
