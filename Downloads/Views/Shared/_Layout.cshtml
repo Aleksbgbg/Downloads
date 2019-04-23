@@ -5,15 +5,23 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="icon" type="image/png" href="~/favicon.png"/>
-    
+
     <meta property="og:image" content="@($"{Context.Request.Scheme}://{Context.Request.Host}{Url.Content("~/favicon.png")}")"/>
     <meta property="og:site_name" content="Aleksbgbg Downloads"/>
     <meta property="og:title" content="Aleksbgbg Downloads | @ViewBag.PageTitle"/>
     <meta property="og:description" content="Downloads page for all of Aleksbgbg's released software on GitHub."/>
 </head>
 <body>
+    <header>
+        <vc:nav-bar></vc:nav-bar>
+    </header>
+
     <main class="container">
         @RenderBody()
     </main>
+
+    <script src="~/lib/jquery/dist/jquery.slim.min.js"></script>
+    <script src="~/lib/popperjs/dist/umd/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

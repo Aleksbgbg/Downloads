@@ -3,8 +3,16 @@
   "defaultProvider": "unpkg",
   "libraries": [
     {
+      "library": "jquery@3.4.0",
+      "destination": "wwwroot/lib/jquery"
+    },
+    {
       "library": "bootstrap@4.3.0",
       "destination": "wwwroot/lib/bootstrap"
+    },
+    {
+      "library": "popper.js@1.14.3",
+      "destination": "wwwroot/lib/popperjs"
     }
   ]
 }

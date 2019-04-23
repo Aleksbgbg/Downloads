@@ -1,0 +1,40 @@
+﻿@model NavBarViewModel
+
+<nav class="navbar navbar-dark navbar-expand-md bg-dark">
+    <a class="navbar-brand" asp-controller="Downloads" asp-action="All">
+        <img src="~/favicon.png" width="30" height="30" class="d-inline-block align-top" alt=""/>
+        Downloads
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item @(Model.IsHome ? "active" : null)">
+                <a class="nav-link" asp-controller="Downloads" asp-action="All">All Apps</a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link @(Model.IsHome ? null : "active") dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    App List
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    @foreach (var appNav in Model.AppNavs)
+                    {
+                        if (appNav.IsActive)
+                        {
+                            <a class="dropdown-item active disabled" tabindex="-1" aria-disabled="true" asp-controller="Downloads" asp-action="ViewApp" asp-route-appName="@appNav.Name">@appNav.Name</a>
+                        }
+                        else
+                        {
+                            <a class="dropdown-item" asp-controller="Downloads" asp-action="ViewApp" asp-route-appName="@appNav.Name">@appNav.Name</a>
+                        }
+                    }
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
