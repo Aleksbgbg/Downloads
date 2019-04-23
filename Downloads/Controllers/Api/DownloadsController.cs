@@ -1,11 +1,12 @@
-﻿namespace Downloads.Controllers
+﻿namespace Downloads.Controllers.Api
 {
     using Downloads.Models;
     using Downloads.Models.Repositories;
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class DownloadsController : Controller
+    [Route("api/[Controller]")]
+    public class DownloadsController : ControllerBase
     {
         private readonly IAppRepository _appRepository;
 
@@ -14,17 +15,7 @@
             _appRepository = appRepository;
         }
 
-        public ViewResult All()
-        {
-            return View(_appRepository.Apps);
-        }
-
-        public ViewResult ViewApp(string appName)
-        {
-            ViewBag.AppName = appName;
-            return View(_appRepository.Find(appName));
-        }
-
+        [HttpGet("[Action]/{AppName}")]
         public RedirectResult Download(string appName)
         {
             App app = _appRepository.Find(appName);

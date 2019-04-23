@@ -13,7 +13,7 @@
 
     public class NavBar : ViewComponent
     {
-        private const string HomeAction = nameof(DownloadsController.All);
+        private const string HomeAction = nameof(AppController.All);
 
         private readonly IAppRepository _appRepository;
 

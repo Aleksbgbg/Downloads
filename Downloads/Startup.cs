@@ -92,23 +92,15 @@
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: null,
-                                template: "Download/{AppName}",
+                                template: "App/View/{AppName}",
                                 defaults: new
                                 {
-                                    Controller = "Downloads",
-                                    Action = "Download"
-                                });
-
-                routes.MapRoute(name: null,
-                                template: "View/App/{AppName}",
-                                defaults: new
-                                {
-                                    Controller = "Downloads",
+                                    Controller = "App",
                                     Action = "ViewApp"
                                 });
 
                 routes.MapRoute(name: null,
-                                template: "{Controller=Downloads}/{Action=All}");
+                                template: "{Controller=App}/{Action=All}");
             });
         }
     }
