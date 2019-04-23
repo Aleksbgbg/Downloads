@@ -1,5 +1,7 @@
 ﻿namespace Downloads.Controllers.Api
 {
+    using System.Threading.Tasks;
+
     using Downloads.Models;
     using Downloads.Models.Repositories;
 
@@ -16,9 +18,11 @@
         }
 
         [HttpGet("[Action]/{AppName}")]
-        public RedirectResult Download(string appName)
+        public async Task<RedirectResult> Download(string appName)
         {
             App app = _appRepository.Find(appName);
+            ++app.DownloadCount;
+            await _appRepository.Update(app);
             return Redirect(app.DownloadUrl);
         }
     }
