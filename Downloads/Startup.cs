@@ -2,6 +2,7 @@
 {
     using System;
 
+    using Downloads.Infrastructure;
     using Downloads.Infrastructure.Options;
     using Downloads.Models.Database;
     using Downloads.Models.Repositories;
@@ -10,6 +11,8 @@
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ApplicationModels;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -55,7 +58,8 @@
             services.AddHostedService<DatabaseUpdateService>();
 #endif
 
-            services.AddMvc();
+            services.AddMvc(options => options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer())))
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddWebMarkupMin(options =>
                     {
@@ -92,7 +96,7 @@
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: null,
-                                template: "App/View/{AppName}",
+                                template: "app/view/{AppName}",
                                 defaults: new
                                 {
                                     Controller = "App",
