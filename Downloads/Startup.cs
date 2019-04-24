@@ -24,6 +24,8 @@
 
     public class Startup
     {
+        private const string SpaStaticFilesPath = "Client/dist/Client";
+
         private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
@@ -34,6 +36,8 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(_configuration["Data:ConnectionString"]));
+
+            services.AddSpaStaticFiles(configuration => configuration.RootPath = SpaStaticFilesPath);
 
             services.AddTransient<IGitHubClient, GitHubClient>(serviceProvider =>
             {
@@ -88,23 +92,26 @@
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseWebMarkupMin();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(name: null,
-                                template: "app/view/{AppName}",
-                                defaults: new
-                                {
-                                    Controller = "App",
-                                    Action = "ViewApp"
-                                });
+            app.UseMvc();
 
-                routes.MapRoute(name: null,
-                                template: "{Controller=App}/{Action=All}");
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = SpaStaticFilesPath;
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                }
             });
         }
     }
