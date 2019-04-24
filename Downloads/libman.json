@@ -4,15 +4,25 @@
   "libraries": [
     {
       "library": "jquery@3.4.0",
-      "destination": "wwwroot/lib/jquery"
+      "destination": "wwwroot/lib/jquery",
+      "files": [
+        "dist/jquery.slim.min.js"
+      ]
     },
     {
       "library": "bootstrap@4.3.0",
-      "destination": "wwwroot/lib/bootstrap"
+      "destination": "wwwroot/lib/bootstrap",
+      "files": [
+        "dist/css/bootstrap.min.css",
+        "dist/js/bootstrap.min.js"
+      ]
     },
     {
       "library": "popper.js@1.14.3",
-      "destination": "wwwroot/lib/popperjs"
+      "destination": "wwwroot/lib/popperjs",
+      "files": [
+        "dist/umd/popper.min.js"
+      ]
     }
   ]
 }
