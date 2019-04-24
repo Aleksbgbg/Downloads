@@ -1,0 +1,20 @@
+<div class="card my-3">
+  <div class="card-body">
+    <h5 class="card-title">
+      <a routerLink="/app/{{ app.name }}">{{ app.name }}</a>
+    </h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{ app.latestVersion }}</h6>
+
+    <div markdown ngPreserveWhitespaces class="card-text">
+      {{ app.description }}
+    </div>
+
+    <a class="btn btn-outline-success card-link" role="button" href="/api/downloads/download/{{ app.name }}">Download</a>
+
+    <a class="card-link" href="{{ app.gitHubUrl }}" target="_blank">Further Details</a>
+  </div>
+
+  <div class="card-footer text-muted">
+    Released {{ app.lastUpdated | date : "EEEE, dd MMMM yyyy HH:mm:ss" }}
+  </div>
+</div>

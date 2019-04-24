@@ -1,0 +1,29 @@
+<nav class="navbar navbar-dark navbar-expand-md bg-dark">
+  <a class="navbar-brand" routerLink="/">
+    <img src="/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="" />
+    Downloads
+  </a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+          aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">All Apps</a>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="javascript:" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" routerLink="/app" routerLinkActive="active">
+          App List
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" tabindex="-1" aria-disabled="true" *ngFor="let app of apps | async" routerLink="/app/{{ app.name }}" routerLinkActive="active">{{ app.name }}</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
