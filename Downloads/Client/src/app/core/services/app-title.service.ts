@@ -5,24 +5,7 @@ import { Title, Meta } from "@angular/platform-browser";
   providedIn: "root"
 })
 export class AppTitleService {
-  constructor(private titleService: Title, private metaService: Meta, @Inject("protocol") protocol: string, @Inject("host") host: string) {
-    metaService.addTag({
-      name: "og:image",
-      content: `${protocol}//${host}/favicon.png`
-    });
-    metaService.addTag({
-      name: "og:site_name",
-      content: "Aleksbgbg Downloads"
-    });
-    metaService.addTag({
-      name: "og:title",
-      content: "Aleksbgbg Downloads"
-    });
-    metaService.addTag({
-      name: "og:description",
-      content: "Downloads page for all of Aleksbgbg's released software on GitHub."
-    });
-  }
+  constructor(private titleService: Title, private metaService: Meta, @Inject("protocol") protocol: string, @Inject("host") host: string) { }
 
   public chooseHome(): void {
     this.setTitle("All Apps");
