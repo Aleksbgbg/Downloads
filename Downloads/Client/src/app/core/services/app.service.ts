@@ -13,6 +13,6 @@ export class AppService {
   }
 
   public getApp(name: string): Observable<App> {
-    return this.httpClient.get<App>(`/api/apps/${name}`);
+    return this.httpClient.get<App>(`/api/apps/app/${name}`);
   }
 }

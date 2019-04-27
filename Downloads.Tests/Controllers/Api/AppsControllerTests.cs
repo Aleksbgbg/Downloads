@@ -1,6 +1,5 @@
 ﻿namespace Downloads.Tests.Controllers.Api
 {
-    using System.Collections.Generic;
     using System.Linq;
 
     using Downloads.Controllers.Api;
@@ -23,6 +22,7 @@
         public AppsControllerTests()
         {
             _appRepositoryMock = new Mock<IAppRepository>();
+
             _appsController = new AppsController(_appRepositoryMock.Object);
         }
 
@@ -30,24 +30,42 @@
         public void TestRetrieveAllApps()
         {
             App[] apps = Data.Apps;
+            SetupApps(apps);
 
-            _appRepositoryMock.SetupGet(appRepository => appRepository.Apps)
-                              .Returns(apps.AsQueryable());
+            ActionResult<App[]> result = _appsController.All();
 
-            IActionResult result = _appsController.All();
-
-            Assert.IsAssignableFrom<IEnumerable<App>>(result);
-            //Assert.Equal(apps, result);
+            Assert.Equal(apps, result.Value);
         }
 
         [Fact]
         public void TestFilterAppsOnViewApp()
         {
             App lastApp = Data.Apps.Last();
+            SetupFind(lastApp);
 
-            IActionResult result = _appsController.App(lastApp.Name);
+            ActionResult<App> result = _appsController.App(lastApp.Name);
 
-            _appRepositoryMock.Verify(appRepository => appRepository.Find(lastApp.Name), Times.Once);
+            Assert.Equal(lastApp, result.Value);
+        }
+
+        [Fact]
+        public void TestFilterAppsReturnsNotFoundWhenAppMissing()
+        {
+            ActionResult<App> result = _appsController.App("SomeMissingAppName");
+
+            Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        private void SetupApps(App[] apps)
+        {
+            _appRepositoryMock.SetupGet(appRepository => appRepository.Apps)
+                              .Returns(apps.AsQueryable());
+        }
+
+        private void SetupFind(App app)
+        {
+            _appRepositoryMock.Setup(appRepository => appRepository.Find(app.Name))
+                              .Returns(app);
         }
     }
 }
