@@ -27,6 +27,7 @@
 
         [HttpGet("{appName}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<App> App(string appName)
         {
             App app = _appRepository.Find(appName);
