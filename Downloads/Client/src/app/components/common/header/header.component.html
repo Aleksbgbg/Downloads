@@ -1,6 +1,6 @@
 <nav class="navbar navbar-dark navbar-expand-md bg-dark">
   <a class="navbar-brand" routerLink="/">
-    <img src="/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="" />
+    <img src="/favicon.png" width="30" height="30" class="d-inline-block align-top" alt=""/>
     Downloads
   </a>
 
@@ -16,13 +16,15 @@
       </li>
 
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="javascript:" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" routerLink="/app" routerLinkActive="active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+           aria-expanded="false" routerLinkActive="active">
           App List
-        </a>
 
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" tabindex="-1" aria-disabled="true" *ngFor="let app of apps | async" routerLink="/app/{{ app.name }}" routerLinkActive="active">{{ app.name }}</a>
-        </div>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" *ngFor="let app of apps | async" routerLink="/app/{{ app.name }}"
+               routerLinkActive="active">{{ app.name }}</a>
+          </div>
+        </a>
       </li>
     </ul>
   </div>

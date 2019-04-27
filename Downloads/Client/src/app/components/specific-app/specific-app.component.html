@@ -1,1 +1,1 @@
-<app-download [app]="app | async"></app-download>
+<app-download *ngIf="app | async as loadedApp" [app]="loadedApp"></app-download>
