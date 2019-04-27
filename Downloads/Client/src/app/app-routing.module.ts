@@ -11,6 +11,11 @@ const routes: Routes = [
   {
     path: "app/:name",
     component: SpecificAppComponent
+  },
+  {
+    path: "**",
+    pathMatch: "full",
+    redirectTo: ""
   }
 ];
 

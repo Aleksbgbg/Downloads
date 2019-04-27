@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { AppService } from "src/app/core/services/app.service";
-import { ActivatedRoute } from "@angular/router";
-import { Observable } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Observable, of } from "rxjs";
+import { catchError } from 'rxjs/operators';
 import { AppTitleService } from "src/app/core/services/app-title.service";
 
 @Component({
@@ -12,7 +13,7 @@ import { AppTitleService } from "src/app/core/services/app-title.service";
 export class SpecificAppComponent implements OnInit {
   public app: Observable<App>;
 
-  constructor(private route: ActivatedRoute, private titleService: AppTitleService, private appService: AppService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private titleService: AppTitleService, private appService: AppService) { }
 
   public ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -23,6 +24,11 @@ export class SpecificAppComponent implements OnInit {
   }
 
   private renderApp(name: string): void {
-    this.app = this.appService.getApp(name);
+    this.app = this.appService.getApp(name).pipe(
+      catchError(() => {
+        this.router.navigate(["/"]);
+        return of(null);
+      })
+    );
   }
 }
