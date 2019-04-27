@@ -20,6 +20,8 @@
 
     using Octokit;
 
+    using Swashbuckle.AspNetCore.Swagger;
+
     using WebMarkupMin.AspNetCore2;
 
     public class Startup
@@ -73,6 +75,13 @@
                     .AddHtmlMinification()
                     .AddHttpCompression();
 
+            services.AddSwaggerGen(options => options.SwaggerDoc("v1",
+                                                                 new Info
+                                                                 {
+                                                                     Title = "Downloads API",
+                                                                     Version = "v1"
+                                                                 }));
+
             services.Configure<DatabaseTimerOptions>(options =>
             {
                 DateTime today = DateTime.Today;
@@ -91,6 +100,9 @@
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Downloads API V1"));
             }
             else
             {
