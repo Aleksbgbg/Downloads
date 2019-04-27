@@ -65,6 +65,16 @@
         }
 
         [Fact]
+        public void TestFindAppDoesntExistReturnsNull()
+        {
+            SetupAppList();
+
+            App result = _appRepository.Find("MissingApp");
+
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async Task TestAddApp()
         {
             List<App> apps = SetupEmptyAppList();

@@ -18,7 +18,7 @@
 
         public App Find(string appName)
         {
-            return _appDbContext.Apps.Single(app => app.Name == appName);
+            return _appDbContext.Apps.SingleOrDefault(app => app.Name == appName);
         }
 
         public async Task Add(App newApp)
