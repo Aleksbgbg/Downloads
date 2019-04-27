@@ -7,7 +7,7 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    [Route("api/[Controller]")]
+    [Route("api/[Controller]/[Action]")]
     public class DownloadsController : ControllerBase
     {
         private readonly IAppRepository _appRepository;
@@ -17,7 +17,7 @@
             _appRepository = appRepository;
         }
 
-        [HttpGet("[Action]/{AppName}")]
+        [HttpGet("{appName}")]
         public async Task<RedirectResult> Download(string appName)
         {
             App app = _appRepository.Find(appName);
