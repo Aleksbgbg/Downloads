@@ -15,7 +15,7 @@
             _latestRelease = latestRelease;
         }
 
-        public string AppName => _gitHubRepository.Name;
+        public string AppName => _gitHubRepository.Name.Replace('-', ' ');
 
         public string LatestVersion => _latestRelease.TagName;
 

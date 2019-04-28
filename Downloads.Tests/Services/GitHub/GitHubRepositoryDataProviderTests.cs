@@ -32,7 +32,7 @@
 
             SetupAppName(appName);
 
-            Assert.Equal(appName, _gitHubRepositoryDataProvider.AppName);
+            Assert.Equal(appName.Replace('-', ' '), _gitHubRepositoryDataProvider.AppName);
         }
 
         [Fact]
