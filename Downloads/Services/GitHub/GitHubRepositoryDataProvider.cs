@@ -37,5 +37,7 @@
         public string DownloadUrl => _latestRelease.Assets.First(asset => asset.Name == "Setup.exe" || asset.Name == "Release.zip").BrowserDownloadUrl;
 
         public string GitHubPageUrl => _gitHubRepository.HtmlUrl;
+
+        public DateTime LastUpdated => (_latestRelease.PublishedAt ?? _latestRelease.CreatedAt).UtcDateTime;
     }
 }

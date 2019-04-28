@@ -1,5 +1,6 @@
 ﻿namespace Downloads.Services.GitHub
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -19,5 +20,9 @@
         public string Body => _release.Body;
 
         public IEnumerable<IGitHubReleaseAsset> Assets => _release.Assets.Select(asset => new GitHubReleaseAsset(asset));
+
+        public DateTimeOffset? PublishedAt => _release.PublishedAt;
+
+        public DateTimeOffset CreatedAt => _release.CreatedAt;
     }
 }

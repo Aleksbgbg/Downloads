@@ -85,6 +85,28 @@
             Assert.Equal(gitHubPageUrl, _gitHubRepositoryDataProvider.GitHubPageUrl);
         }
 
+        [Fact]
+        public void TestLastUpdated()
+        {
+            DateTimeOffset utcNow = DateTime.UtcNow;
+            DateTimeOffset lastUpdated = utcNow.ToOffset(TimeSpan.FromMinutes(30));
+            SetupLastUpdated(lastUpdated);
+
+            Assert.Equal(utcNow, _gitHubRepositoryDataProvider.LastUpdated);
+        }
+
+        [Fact]
+        public void TestLastUpdatedFallbackToCreatedAt()
+        {
+            DateTimeOffset utcNow = DateTime.UtcNow;
+            DateTimeOffset createdAt = utcNow.ToOffset(TimeSpan.FromMinutes(30));
+
+            SetupLastUpdated(null);
+            SetupCreatedAt(createdAt);
+
+            Assert.Equal(createdAt, _gitHubRepositoryDataProvider.LastUpdated);
+        }
+
         private void SetupAppName(string name)
         {
             _repositoryMock.SetupGet(repository => repository.Name)
@@ -128,6 +150,18 @@
         {
             _repositoryMock.SetupGet(repository => repository.HtmlUrl)
                            .Returns(url);
+        }
+
+        private void SetupLastUpdated(DateTimeOffset? lastUpdated)
+        {
+            _latestReleaseMock.SetupGet(release => release.PublishedAt)
+                              .Returns(lastUpdated);
+        }
+
+        private void SetupCreatedAt(DateTimeOffset createdAt)
+        {
+            _latestReleaseMock.SetupGet(release => release.CreatedAt)
+                              .Returns(createdAt);
         }
 
         private static IGitHubReleaseAsset CreateAsset(string name, string downloadUrl = "")
