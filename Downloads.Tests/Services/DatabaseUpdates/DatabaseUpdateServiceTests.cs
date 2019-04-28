@@ -43,19 +43,11 @@
         }
 
         [Fact]
-        public async Task TestCallsUpdateOnStart()
-        {
-            await _databaseUpdateService.StartAsync();
-
-            _appRepositoryUpdateServiceMock.Verify(appRepositoryUpdateService => appRepositoryUpdateService.UpdateApps(), Times.Once);
-        }
-
-        [Fact]
         public async Task TestStartsTimerOnStart()
         {
             await _databaseUpdateService.StartAsync();
 
-            _databaseUpdateTimerMock.Verify(databaseUpdateTimer => databaseUpdateTimer.Start(), Times.Once);
+            VerifyStartTimer();
         }
 
         [Fact]
@@ -63,9 +55,9 @@
         {
             await _databaseUpdateService.StartAsync();
 
-            _databaseUpdateTimerMock.Raise(databaseUpdateTimer => databaseUpdateTimer.Elapsed += null, (EventArgs)null);
+            RaiseTimerElapsedEvent();
 
-            _appRepositoryUpdateServiceMock.Verify(appRepositoryUpdateService => appRepositoryUpdateService.UpdateApps(), Times.Exactly(2));
+            VerifyUpdateApps();
         }
 
         [Fact]
@@ -73,7 +65,7 @@
         {
             await _databaseUpdateService.StopAsync();
 
-            _databaseUpdateTimerMock.Verify(databaseUpdateTimer => databaseUpdateTimer.Stop(), Times.Once);
+            VerifyStopTimer();
         }
 
         [Fact]
@@ -86,10 +78,10 @@
 
             for (int elapsedInvocation = 0; elapsedInvocation < timerElapsedRaiseCount; elapsedInvocation++)
             {
-                _databaseUpdateTimerMock.Raise(databaseUpdateTimer => databaseUpdateTimer.Elapsed += null, (EventArgs)null);
+                RaiseTimerElapsedEvent();
             }
 
-            _appRepositoryUpdateServiceMock.Verify(appRepositoryUpdateService => appRepositoryUpdateService.UpdateApps(), Times.Once);
+            VerifyUpdateApps(Times.Never);
         }
 
         [Fact]
@@ -97,7 +89,37 @@
         {
             _databaseUpdateService.Dispose();
 
-            _databaseUpdateTimerMock.Verify(databaseUpdateTimer => databaseUpdateTimer.Dispose(), Times.Once);
+            VerifyDisposeTimer();
+        }
+
+        private void RaiseTimerElapsedEvent()
+        {
+            _databaseUpdateTimerMock.Raise(databaseUpdateTimer => databaseUpdateTimer.Elapsed += null, (EventArgs)null);
+        }
+
+        private void VerifyStartTimer()
+        {
+            _databaseUpdateTimerMock.Verify(databaseUpdateTimer => databaseUpdateTimer.Start());
+        }
+
+        private void VerifyStopTimer()
+        {
+            _databaseUpdateTimerMock.Verify(databaseUpdateTimer => databaseUpdateTimer.Stop());
+        }
+
+        private void VerifyDisposeTimer()
+        {
+            _databaseUpdateTimerMock.Verify(databaseUpdateTimer => databaseUpdateTimer.Dispose());
+        }
+
+        private void VerifyUpdateApps()
+        {
+            VerifyUpdateApps(Times.Once);
+        }
+
+        private void VerifyUpdateApps(Func<Times> times)
+        {
+            _appRepositoryUpdateServiceMock.Verify(appRepositoryUpdateService => appRepositoryUpdateService.UpdateApps(), times);
         }
     }
 }

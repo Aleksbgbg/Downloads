@@ -3,6 +3,7 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Timers;
 
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -34,12 +35,12 @@
             _logger = logger;
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken = default)
+        public Task StartAsync(CancellationToken cancellationToken = default)
         {
-            await UpdateApps();
-
             _databaseUpdateTimerService.Start();
             _databaseUpdateTimerService.Elapsed += DatabaseUpdateTimerElapsed;
+
+            return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken = default)
@@ -55,7 +56,7 @@
             _databaseUpdateTimerService.Dispose();
         }
 
-        private async void DatabaseUpdateTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private async void DatabaseUpdateTimerElapsed(object sender, ElapsedEventArgs e)
         {
             await UpdateApps();
         }
