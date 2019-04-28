@@ -28,6 +28,16 @@
                 int startIndex = releaseBody.IndexOf("\r\n", StringComparison.Ordinal);
                 int endIndex = releaseBody.IndexOf("\r\n\r\n", StringComparison.Ordinal);
 
+                if (startIndex < 0)
+                {
+                    startIndex = 0;
+                }
+
+                if (endIndex < 0)
+                {
+                    endIndex = releaseBody.Length;
+                }
+
                 string description = releaseBody.Substring(startIndex, endIndex - startIndex);
 
                 return description;

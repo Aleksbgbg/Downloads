@@ -56,6 +56,15 @@
         }
 
         [Fact]
+        public void TestDescriptionNoNewlines()
+        {
+            const string releaseBody = "Some description.";
+            SetupReleaseBody(releaseBody);
+
+            Assert.Equal(releaseBody, _gitHubRepositoryDataProvider.Description);
+        }
+
+        [Fact]
         public void TestDownloadUrl()
         {
             const string downloadUrl = "https://download.com";
