@@ -8,6 +8,7 @@
     using Downloads.Models.Repositories;
     using Downloads.Services;
     using Downloads.Services.DatabaseUpdates;
+    using Downloads.Services.GitHub;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -52,6 +53,8 @@
             });
 
             services.AddTransient<IAppRepository, AppRepository>();
+
+            services.AddTransient<IReleaseFinderService, ReleaseFinderService>();
             services.AddTransient<IGitHubApiService, GitHubApiService>();
 
             services.AddTransient<ITimer, TimerAdapter>();
