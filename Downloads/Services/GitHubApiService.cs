@@ -1,7 +1,6 @@
 ﻿namespace Downloads.Services
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Downloads.Models;
@@ -24,27 +23,33 @@
 
         public async Task<IEnumerable<App>> GetReleasedGitHubApps()
         {
-            IGitHubRepository[] repositories = (await _repositoryFinderService.GetAllRepositories()).ToArray();
+            IEnumerable<IGitHubRepository> repositories = await _repositoryFinderService.GetAllRepositories();
 
-            App[] apps = new App[repositories.Length];
+            List<App> apps = new List<App>();
 
-            for (int repositoryIndex = 0; repositoryIndex < repositories.Length; repositoryIndex++)
+            foreach (IGitHubRepository repository in repositories)
             {
-                IGitHubRepository repository = repositories[repositoryIndex];
-
-                bool hasReleases = await _releaseFinderService.HasReleases(repository);
-
-                if (hasReleases)
+                if (await HasReleases(repository))
                 {
-                    IGitHubRelease latestRelease = await _releaseFinderService.GetLatestRelease(repository);
-
-                    App repositoryApp = _repositoryToAppGeneratorService.GenerateApp(new GitHubRepositoryDataProvider(repository, latestRelease));
-
-                    apps[repositoryIndex] = repositoryApp;
+                    apps.Add(await CreateAppForRepository(repository));
                 }
             }
 
             return apps;
+        }
+
+        private Task<bool> HasReleases(IGitHubRepository repository)
+        {
+            return _releaseFinderService.HasReleases(repository);
+        }
+
+        private async Task<App> CreateAppForRepository(IGitHubRepository repository)
+        {
+            IGitHubRelease latestRelease = await _releaseFinderService.GetLatestRelease(repository);
+
+            App repositoryApp = _repositoryToAppGeneratorService.GenerateApp(new GitHubRepositoryDataProvider(repository, latestRelease));
+
+            return repositoryApp;
         }
     }
 }

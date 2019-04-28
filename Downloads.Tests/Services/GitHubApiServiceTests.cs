@@ -81,22 +81,41 @@
             Assert.Equal(generatedApps, releasedApps);
         }
 
+        [Fact]
+        public async Task TestNoNullApps()
+        {
+            App[] appsToBeReturned = Data.Apps;
+            SetupAppGeneratorWithApps(appsToBeReturned);
+
+            IEnumerable<App> apps = await _gitHubApiService.GetReleasedGitHubApps();
+
+            Assert.All(apps, app => Assert.NotNull(app));
+        }
+
         private App[] SetupApps()
         {
             App[] apps = Data.Apps;
             IGitHubRepository[] repositories = new IGitHubRepository[apps.Length];
 
-            ISetupSequentialResult<App> sequenceSetup = _repositoryToAppGeneratorServiceMock.SetupSequence(appGenerator => appGenerator.GenerateApp(It.IsAny<IGitHubRepositoryDataProvider>()));
-
             for (int appIndex = 0; appIndex < apps.Length; appIndex++)
             {
                 repositories[appIndex] = SetupRepository();
-                sequenceSetup.Returns(apps[appIndex]);
             }
 
+            SetupAppGeneratorWithApps(apps);
             SetupRepositories(repositories);
 
             return apps;
+        }
+
+        private void SetupAppGeneratorWithApps(App[] apps)
+        {
+            ISetupSequentialResult<App> sequenceSetup = _repositoryToAppGeneratorServiceMock.SetupSequence(appGenerator => appGenerator.GenerateApp(It.IsAny<IGitHubRepositoryDataProvider>()));
+
+            foreach (App app in apps)
+            {
+                sequenceSetup.Returns(app);
+            }
         }
 
         private IGitHubRepository[] SetupRepositories(int quantity)
