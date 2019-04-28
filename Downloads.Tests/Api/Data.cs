@@ -23,11 +23,5 @@
                 LatestVersion = "v1.2.0"
             }
         };
-
-        internal static GitHubRepository[] Repositories =
-        {
-            new GitHubRepository("Tornado-Player"),
-            new GitHubRepository("YouTube-Downloader")
-        };
     }
 }
