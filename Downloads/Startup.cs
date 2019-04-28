@@ -56,6 +56,7 @@
 
             services.AddTransient<IRepositoryFinderService, RepositoryFinderService>();
             services.AddTransient<IReleaseFinderService, ReleaseFinderService>();
+            services.AddTransient<IRepositoryToAppGeneratorService, RepositoryToAppGeneratorService>();
             services.AddTransient<IGitHubApiService, GitHubApiService>();
 
             services.AddTransient<ITimer, TimerAdapter>();

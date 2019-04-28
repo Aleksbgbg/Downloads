@@ -9,7 +9,7 @@
 
     using Xunit;
 
-    public class RepositoryToAppGeneratorTests
+    public class RepositoryToAppGeneratorServiceTests
     {
         private const string AppName = "Tornado-Player";
 
@@ -25,7 +25,7 @@
 
         private readonly App _app;
 
-        public RepositoryToAppGeneratorTests()
+        public RepositoryToAppGeneratorServiceTests()
         {
             Mock<IGitHubRepositoryDataProvider> gitHubRepositoryMock = new Mock<IGitHubRepositoryDataProvider>();
             gitHubRepositoryMock.SetupGet(repository => repository.AppName)
@@ -41,9 +41,9 @@
             gitHubRepositoryMock.SetupGet(repository => repository.LastUpdated)
                                 .Returns(LastUpdated);
 
-            RepositoryToAppGenerator repositoryToAppGenerator = new RepositoryToAppGenerator(gitHubRepositoryMock.Object);
+            RepositoryToAppGeneratorService repositoryToAppGeneratorService = new RepositoryToAppGeneratorService();
 
-            _app = repositoryToAppGenerator.GenerateApp();
+            _app = repositoryToAppGeneratorService.GenerateApp(gitHubRepositoryMock.Object);
         }
 
         [Fact]
