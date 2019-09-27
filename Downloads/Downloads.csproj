@@ -70,8 +70,4 @@
     </ItemGroup>
   </Target>
 
-  <ItemGroup>
-    <None Include="app.yaml" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
 </Project>
