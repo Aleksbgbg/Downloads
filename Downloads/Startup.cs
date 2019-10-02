@@ -66,7 +66,7 @@
             services.AddTransient<IAppRepositoryUpdateService, AppRepositoryUpdateService>();
 
 #if !DEBUG
-            services.AddHostedService<DatabaseUpdateService>();
+            // services.AddHostedService<DatabaseUpdateService>();
 #endif
 
             services.AddMvc(options => options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer())))
